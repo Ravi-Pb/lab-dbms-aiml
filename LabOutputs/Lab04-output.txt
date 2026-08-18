@@ -1,0 +1,243 @@
+Microsoft Windows [Version 10.0.26200.8875]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Windows\System32>D:
+
+D:\>cd "D:\Ravi\Btech CSE AI & ML\4th_sem\DBMS\DBMSlab-AIML24"
+
+D:\Ravi\Btech CSE AI & ML\4th_sem\DBMS\DBMSlab-AIML24>sqlite3 JoinsDB.db
+SQLite version 3.53.1 2026-05-05 10:34:17
+Enter ".help" for usage hints.
+sqlite> PRAGMA foreign_keys = ON;
+sqlite> ALTER TABLE Student ADD COLUMN Marks INTEGER;
+Parse error near line 2: no such table: Student
+sqlite> .tables
+sqlite> .quit
+
+D:\Ravi\Btech CSE AI & ML\4th_sem\DBMS\DBMSlab-AIML24>.databases
+'.databases' is not recognized as an internal or external command,
+operable program or batch file.
+
+D:\Ravi\Btech CSE AI & ML\4th_sem\DBMS\DBMSlab-AIML24>.database
+'.database' is not recognized as an internal or external command,
+operable program or batch file.
+
+D:\Ravi\Btech CSE AI & ML\4th_sem\DBMS\DBMSlab-AIML24>sqlite3 JoinsDB.db
+SQLite version 3.53.1 2026-05-05 10:34:17
+Enter ".help" for usage hints.
+sqlite> .tables
+sqlite> .quit
+
+D:\Ravi\Btech CSE AI & ML\4th_sem\DBMS\DBMSlab-AIML24>JoinDB.db
+The system cannot execute the specified program.
+
+D:\Ravi\Btech CSE AI & ML\4th_sem\DBMS\DBMSlab-AIML24>sqlite3 JoinDB.db
+SQLite version 3.53.1 2026-05-05 10:34:17
+Enter ".help" for usage hints.
+sqlite> .tables
+Colour     Course     Department     Enrollment     Student
+sqlite> PRAGMA foreign_key = ON;
+sqlite> ALTER TABLE Student ADD COLUMN Marks INTEGER;
+sqlite> UPDATE Student SET Marks = 78 WHERE RollNo = 101;
+sqlite> UPDATE Student SET Marks = 88 WHERE RollNo = 102;
+sqlite> UPDATE Student SET Marks = 65 WHERE RollNo = 103;
+sqlite> UPDATE Student SET Marks = 91 WHERE RollNo = 104;
+sqlite> SELECT * FROM Student;
+╭────────┬───────┬────────┬───────╮
+│ RollNo │ Name  │ DeptID │ Marks │
+╞════════╪═══════╪════════╪═══════╡
+│    101 │ Rahul │      1 │    78 │
+│    102 │ Priya │      1 │    88 │
+│    103 │ Aman  │      2 │    65 │
+│    104 │ Sneha │ NULL   │    91 │
+╰────────┴───────┴────────┴───────╯
+sqlite> SELECT COUNT(RollNo) AS Total FROM Student;
+╭───────╮
+│ Total │
+╞═══════╡
+│     4 │
+╰───────╯
+sqlite> SELECT COUNT(RollNo) Total FROM Student;
+╭───────╮
+│ Total │
+╞═══════╡
+│     4 │
+╰───────╯
+sqlite> SELECT MAX(Marks) AS Highest_Mark, MIN(Marks) AS Lowest_Mark;
+Parse error near line 11: no such column: Marks
+  SELECT MAX(Marks) AS Highest_Mark, MIN(Marks) AS Lowest_Mark;
+             ^--- error here
+sqlite> SELECT MAX(Marks) AS Highest_Mark, MIN(Marks) AS Lowest_Mark FROM Student;
+╭──────────────┬─────────────╮
+│ Highest_Mark │ Lowest_Mark │
+╞══════════════╪═════════════╡
+│           91 │          65 │
+╰──────────────┴─────────────╯
+sqlite> SELECT s.Name,s.Marks FROM Student s WHERE Marks = MAX(Marks);
+Parse error near line 13: misuse of aggregate function MAX()
+  ELECT s.Name,s.Marks FROM Student s WHERE Marks = MAX(Marks);
+                                      error here ---^
+sqlite> SELECT s.Name,s.Marks FROM Student s WHERE s.Marks = MAX(Marks);
+Parse error near line 14: misuse of aggregate function MAX()
+  ECT s.Name,s.Marks FROM Student s WHERE s.Marks = MAX(Marks);
+                                      error here ---^
+sqlite> SELECT ROUND(AVG(Marks),1) AS Class_Average FROM Student;
+╭───────────────╮
+│ Class_Average │
+╞═══════════════╡
+│          80.5 │
+╰───────────────╯
+sqlite> SELECT COUNT(*), COUNT(DeptID) FROM Student;
+╭──────────┬───────────────╮
+│ COUNT(*) │ COUNT(DeptID) │
+╞══════════╪═══════════════╡
+│        4 │             3 │
+╰──────────┴───────────────╯
+sqlite> SELECT * FROM Department;
+╭────────┬──────────╮
+│ DeptID │ DeptName │
+╞════════╪══════════╡
+│      1 │ CSE      │
+│      2 │ ECE      │
+│      3 │ ME       │
+╰────────┴──────────╯
+sqlite> SELECT * FROM Enrollment;
+╭────────┬──────────╮
+│ RollNo │ CourseID │
+╞════════╪══════════╡
+│    101 │      201 │
+│    101 │      202 │
+│    102 │      201 │
+│    103 │      202 │
+│    104 │      201 │
+╰────────┴──────────╯
+sqlite> SELECT * FROM Student;
+╭────────┬───────┬────────┬───────╮
+│ RollNo │ Name  │ DeptID │ Marks │
+╞════════╪═══════╪════════╪═══════╡
+│    101 │ Rahul │      1 │    78 │
+│    102 │ Priya │      1 │    88 │
+│    103 │ Aman  │      2 │    65 │
+│    104 │ Sneha │ NULL   │    91 │
+╰────────┴───────┴────────┴───────╯
+sqlite> SELECT d.DeptName, COUNT(RollNo) AS No_of_Students
+   ...> FROM Department d \
+   ...> ;
+Parse error near line 20: unrecognized token: "\"
+  COUNT(RollNo) AS No_of_Students FROM Department d \ ;
+                                      error here ---^
+sqlite> SELECT d.DeptName, COUNT(RollNo) AS No_of_Students
+   ...> FROM Department d
+   ...> LEFT JOIN Student s ON s.DeptID = d.DeptID
+   ...> GROUP BY s.DeptName;
+Parse error near line 23: no such column: s.DeptName
+  FT JOIN Student s ON s.DeptID = d.DeptID GROUP BY s.DeptName;
+                                      error here ---^
+sqlite> SELECT d.DeptName, COUNT(RollNo) AS No_of_Students
+   ...> FROM Department d
+   ...> LEFT JOIN Student s ON s.DeptID = d.DeptID
+   ...> GROUP BY DeptName;
+╭──────────┬────────────────╮
+│ DeptName │ No_of_Students │
+╞══════════╪════════════════╡
+│ CSE      │              2 │
+│ ECE      │              1 │
+│ ME       │              0 │
+╰──────────┴────────────────╯
+sqlite> -- in group by we dont write s.DeptName or d.DeptName
+sqlite> SELECT d.DeptName, COUNT(RollNo) AS No_of_Students
+   ...> FROM Department d
+   ...>
+   ...> LEFT JOIN Student s ON s.DeptID = d.DeptID
+   ...> GROUP BY d.DeptName;
+╭──────────┬────────────────╮
+│ DeptName │ No_of_Students │
+╞══════════╪════════════════╡
+│ CSE      │              2 │
+│ ECE      │              1 │
+│ ME       │              0 │
+╰──────────┴────────────────╯
+sqlite> SELECT d.DeptName, AVG(s.Marks) AS Average_Marks
+   ...> FROM Student s JOIN DeptName d ON s.DeptID = d.DeptId
+   ...> GROUP BY d.DeptName;
+Parse error near line 37: no such table: DeptName
+sqlite> SELECT d.DeptName, AVG(s.Marks) AS Average_Marks
+   ...> FROM Student s JOIN DeptName d ON s.DeptID = d.DeptId
+   ...> ;
+Parse error near line 40: no such table: DeptName
+sqlite> SELECT d.DeptName, AVG(s.Marks) AS Average_Marks
+   ...> FROM Student s JOIN Department d ON s.DeptID = d.DeptId
+   ...> GROUP BY d.DeptName;
+╭──────────┬───────────────╮
+│ DeptName │ Average_Marks │
+╞══════════╪═══════════════╡
+│ CSE      │          83.0 │
+│ ECE      │          65.0 │
+╰──────────┴───────────────╯
+sqlite> SELECT d.DeptName, AVG(s.Marks) AS Average_Marks
+   ...> FROM Department d LEFT JOIN Student s ON s.DeptID = d.DeptId
+   ...> GROUP BY d.DeptName;
+╭──────────┬───────────────╮
+│ DeptName │ Average_Marks │
+╞══════════╪═══════════════╡
+│ CSE      │          83.0 │
+│ ECE      │          65.0 │
+│ ME       │ NULL          │
+╰──────────┴───────────────╯
+sqlite> SELECT s.RollNo, s.Name, COUNT(RollNo)
+   ...> ;
+Parse error near line 49: no such column: s.RollNo
+  SELECT s.RollNo, s.Name, COUNT(RollNo) ;
+         ^--- error here
+sqlite> SELECT s.RollNo, s.Name, COUNT(e.RollNo)
+   ...> FROM Student s JOIN Enrollment e On s.RollNo = e.RollNo
+   ...> GROUP BY s.RollNo;
+╭────────┬───────┬─────────────────╮
+│ RollNo │ Name  │ COUNT(e.RollNo) │
+╞════════╪═══════╪═════════════════╡
+│    101 │ Rahul │               2 │
+│    102 │ Priya │               1 │
+│    103 │ Aman  │               1 │
+│    104 │ Sneha │               1 │
+╰────────┴───────┴─────────────────╯
+sqlite> SELECT s.RollNo, s.Name, COUNT(e.RollNo)
+   ...> FROM Student s JOIN Enrollment e On s.RollNo = e.RollNo
+   ...> GROUP BY s.RollNo;
+╭────────┬───────┬─────────────────╮
+│ RollNo │ Name  │ COUNT(e.RollNo) │
+╞════════╪═══════╪═════════════════╡
+│    101 │ Rahul │               2 │
+│    102 │ Priya │               1 │
+│    103 │ Aman  │               1 │
+│    104 │ Sneha │               1 │
+╰────────┴───────┴─────────────────╯
+sqlite> SELECT s.RollNo, s.Name, COUNT(e.RollNo) AS No_of_Courses
+   ...> FROM Student s JOIN Enrollment e On s.RollNo = e.RollNo
+   ...> GROUP BY s.RollNo;
+╭────────┬───────┬───────────────╮
+│ RollNo │ Name  │ No_of_Courses │
+╞════════╪═══════╪═══════════════╡
+│    101 │ Rahul │             2 │
+│    102 │ Priya │             1 │
+│    103 │ Aman  │             1 │
+│    104 │ Sneha │             1 │
+╰────────┴───────┴───────────────╯
+sqlite> SELECT s.RollNo, s.Name, COUNT(e.RollNo) AS No_of_Courses
+   ...> FROM Student s JOIN Enrollment e On s.RollNo = e.RollNo
+   ...> GROUP BY s.RollNo
+   ...> HAVING COUNT(e.RollNo)>1;
+╭────────┬───────┬───────────────╮
+│ RollNo │ Name  │ No_of_Courses │
+╞════════╪═══════╪═══════════════╡
+│    101 │ Rahul │             2 │
+╰────────┴───────┴───────────────╯
+sqlite> SELECT d.DeptID, d.DeptName, AVG(s.Marks) AS Average_Marks
+   ...> FROM Student s JOIN Department d ON s.DeptID= d.DeptID
+   ...> GROUP BY d.DeptName
+   ...> HAVING AVG(Marks)>80;
+╭────────┬──────────┬───────────────╮
+│ DeptID │ DeptName │ Average_Marks │
+╞════════╪══════════╪═══════════════╡
+│      1 │ CSE      │          83.0 │
+╰────────┴──────────┴───────────────╯
+sqlite>
